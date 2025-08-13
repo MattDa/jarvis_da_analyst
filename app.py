@@ -5,6 +5,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
+from PIL.Image import register_extension
 from openai import OpenAI
 
 from agent import ReviewAgent
@@ -33,19 +34,21 @@ def generate_plot(df: pd.DataFrame, user_prompt: str):
                 "Given the following data sample:\n" + preview +
                 f"\nCreate Plotly code that satisfies the instruction: {user_prompt}. "
                 "Assign the resulting Plotly figure to a variable named 'fig'."
+                "Answer with just the code."
             ),
         },
     ]
     response = client.chat.completions.create(
-        model="meta-llama/Llama-3.1-8B-Instruct",
+        model="/models/Llama-3.1-8B-Instruct",
         messages=messages,
     )
-    code = response.choices[0].message["content"]
+    code = response.choices[0].message.content
     local_vars = {"df": df, "px": px, "go": go}
+    code = code.replace("```", "") \
+    .replace("python", "", 1)
     exec(code, local_vars)
     fig = local_vars.get("fig")
     return fig, code
-
 
 if uploaded and prompt:
     try:
@@ -64,3 +67,4 @@ if uploaded and prompt:
             st.markdown(review.thoughts)
     except Exception as e:
         st.error(f"Error: {e}")
+        raise RuntimeError(e)
