@@ -15,7 +15,7 @@ class ReviewResult:
 class ReviewAgent:
     """ReAct-style agent that critiques a Plotly visualization."""
 
-    def __init__(self, base_url: str = "http://localhost:8000/v1", model: str = "meta-llama/Llama-3.1-8B-Instruct") -> None:
+    def __init__(self, base_url: str = "http://localhost:8000/v1", model: str = "/models/Llama-3.1-8B-Instruct") -> None:
         api_key = os.getenv("OPENAI_API_KEY", "llm")
         self.client = OpenAI(base_url=base_url, api_key=api_key)
         self.model = model
@@ -25,9 +25,9 @@ class ReviewAgent:
             model=self.model,
             messages=messages,
         )
-        return response.choices[0].message["content"].strip()
+        return response.choices[0].message.content.strip()
 
-    def review_visual(self, prompt: str, figure_spec: Dict[str, Any]) -> ReviewResult:
+    def review_visual(self, prompt: str, figure_spec) -> ReviewResult:
         fig_json = json.dumps(figure_spec)
         messages = [
             {
