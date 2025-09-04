@@ -15,9 +15,10 @@ class ReviewResult:
 class ReviewAgent:
     """ReAct-style agent that critiques a Plotly visualization."""
 
-    def __init__(self, base_url: str = "http://localhost:8000/v1", model: str = "/models/Llama-3.1-8B-Instruct") -> None:
-        api_key = os.getenv("OPENAI_API_KEY", "llm")
-        self.client = OpenAI(base_url=base_url, api_key=api_key)
+    def __init__(self, base_url: str = "http://localhost:8000/v1", model: str = "gpt-5") -> None:
+        # api_key = os.getenv("OPENAI_API_KEY", "llm")
+        # self.client = OpenAI(base_url=base_url, api_key=api_key)
+        self.client = OpenAI()
         self.model = model
 
     def _chat(self, messages: list[Dict[str, str]]) -> str:
