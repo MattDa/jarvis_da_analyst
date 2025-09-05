@@ -80,11 +80,11 @@ if uploaded and prompt:
         fig, code = generate_plot(df, prompt)
         if fig is not None:
             st.plotly_chart(fig, use_container_width=True)
-            review = agent.review_visual(prompt, fig.to_json())
-            st.subheader("Agent Review")
-            st.markdown(review.review)
-            st.subheader("Agent Chain of Thought")
-            st.markdown(review.thoughts)
+            # review = agent.review_visual(prompt, fig.to_json())
+            # st.subheader("Agent Review")
+            # st.markdown(review.review)
+            # st.subheader("Agent Chain of Thought")
+            # st.markdown(review.thoughts)
     except Exception as e:
         st.error(f"Error: {e}")
         raise RuntimeError(e)
