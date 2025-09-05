@@ -5,3 +5,5 @@ openai
 openpyxl
 networkx
 langgraph
+langchain
+langchain-openai
